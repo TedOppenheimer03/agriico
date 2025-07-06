@@ -230,7 +230,6 @@ with tabs[3]:
     if st.button("Run Apriori"):
         basket = df[sel_cols].astype(bool)
         freq = apriori(basket, min_support=min_sup, use_colnames=True)
-        rules = association_rules(freq, metric="confidence", min_threshold=min_conf)
       rules = association_rules(freq, metric="confidence", min_threshold=min_conf)
 
 # Convert frozenset to readable strings
