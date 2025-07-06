@@ -230,7 +230,12 @@ with tabs[3]:
     if st.button("Run Apriori"):
         basket = df[sel_cols].astype(bool)
         freq = apriori(basket, min_support=min_sup, use_colnames=True)
-    rules = association_rules(freq, metric="confidence", min_threshold=min_conf)
+ rules = association_rules(freq, metric="confidence", min_threshold=min_conf)
+
+# Clean up frozensets to display real column names
+rules["antecedents"] = rules["antecedents"].apply(lambda x: ', '.join(x))
+rules["consequents"] = rules["consequents"].apply(lambda x: ', '.join(x))
+
 st.subheader("Top 10 rules")
 st.dataframe(rules.sort_values("lift", ascending=False).head(10))
 
