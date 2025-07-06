@@ -231,9 +231,20 @@ with tabs[3]:
         basket = df[sel_cols].astype(bool)
         freq = apriori(basket, min_support=min_sup, use_colnames=True)
         rules = association_rules(freq, metric="confidence", min_threshold=min_conf)
-        st.subheader("Top 10 rules")
-        st.dataframe(rules.sort_values("lift", ascending=False).head(10))
-        st.caption("Rules sorted by lift for strongest associations.")
+      rules = association_rules(freq, metric="confidence", min_threshold=min_conf)
+
+# Convert frozenset to readable strings
+rules["antecedents"] = rules["antecedents"].apply(lambda x: " & ".join(sorted(list(x))))
+rules["consequents"] = rules["consequents"].apply(lambda x: " & ".join(sorted(list(x))))
+
+# Reorder columns for clarity
+cols_to_show = ["antecedents", "consequents", "support", "confidence", "lift"]
+if not rules.empty:
+    st.subheader("Top 10 rules")
+    st.dataframe(rules[cols_to_show].sort_values("lift", ascending=False).head(10))
+else:
+    st.warning("No rules generated. Try lowering support/confidence thresholds.")
+
 
 # ---------------------------------------------------------------------------
 # 5. Regression
