@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -257,7 +256,8 @@ with tabs[4]:
         preds = mdl.predict(X_test_r)
         reg_results[name] = {
             "R2": r2_score(y_test_r, preds),
-            "RMSE": mean_squared_error(y_test_r, preds, squared=False)
+            "RMSE": mean_squared_error(y_test_r, preds) ** 0.5
+
         }
     st.dataframe(pd.DataFrame(reg_results).T.style.format("{:.2f}"))
     st.caption("Quick comparison of baseline regressors for spend estimation.")
